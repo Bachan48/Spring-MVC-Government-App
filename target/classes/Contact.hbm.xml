@@ -1,0 +1,132 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+
+
+
+    <class name="myapp.model.Contact" table="emp_contact">
+        <id name="empID" type="string" column="empID">
+            <generator class="assigned" />
+           
+        </id>
+        
+        <property name="empName" type="string" column="empName" not-null="true" />
+        <property name="mobileNo" type="string" column="mobileNo" not-null="true" />
+        <property name="officeNo" type="string" column="officeNo"  not-null="true" />
+        <property name="homeNo" type="string" column="homeNo"  not-null="true" />
+        <property name="email" type="string" column="email"  not-null="true" />
+         <property name="office_code" type="string" column="office_code"  not-null="true" />
+          <property name="post_code" type="string" column="post_code"  not-null="true" />
+    </class>
+    
+    
+    
+  
+    <class name="myapp.model.LevelInfo" table="post_level_desc">
+        <id name="level_id" type="string" column="level_id">
+            <generator class="assigned" />
+           
+        </id>
+        <property name="level_desc" type="string" column="level_desc" not-null="true" />
+    </class>
+    
+    
+    
+    
+     <class name="myapp.model.UserInfo" table="user_info">
+        <id name="user_code" type="string" column="user_code">
+            <generator class="assigned" />
+           
+        </id>
+        <property name="user_name" type="string" column="user_name" not-null="true" />
+         <property name="password" type="string" column="password" not-null="true" />
+         <property name="user_type" type="string" column="user_type" not-null="true" />
+    </class>
+    
+    
+    
+    
+    <class name="myapp.model.UserPreviliges" table="user_previliges">
+        <id name="user_code" type="string" column="user_code">
+            <generator class="assigned" />
+           
+        </id>
+        <property name="org_code" type="string" column="org_code" not-null="true" />
+       
+    </class>
+    
+    
+    
+  <class name="myapp.model.PostInfo" table="post_desc">
+        
+        <id name="post_id" type="string" column="post_id">
+            <generator class="assigned" />
+           
+        </id>
+        <property name="post_name" type="string" column="post_name" not-null="true" />
+            <property name="level_id" type="string" column="level_id" not-null="true" />
+       
+       
+    </class>
+    
+    
+    
+   <class name="myapp.model.OrgInfo" table="org_info">
+        <id name="org_code" type="string" column="org_code">
+            <generator class="assigned" />
+           
+        </id>
+        
+        <property name="org_name" type="string" column="org_name" not-null="true" />
+        <property name="org_type_code" type="string" column="org_type_code" not-null="true" />
+        <set name="org_rel_info_set" table="org_info" 
+				inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="org_code" not-null="true" />
+            </key>
+            <one-to-many class="myapp.model.OrgRelInfo" />
+        </set>
+        <many-to-one name="obj_org_type_info"  column="org_type_code" class="myapp.model.OrgTypeInfo" insert="false" update="false" not-null="true"  />
+          
+        
+    </class>
+    
+    
+    
+    
+     <class name="myapp.model.OrgRelInfo" table="org_rel_info">
+        
+        <composite-id>
+            <key-property name="parent_org" type="string" column="parent_org" />
+            <key-property name="child_org" type="string" column="child_org" />
+        </composite-id>
+        <many-to-one name="org_info" class="myapp.model.OrgInfo" insert="false" update="false" cascade="all" fetch="select">
+            <column name="parent_org" not-null="true"  />
+        </many-to-one>
+       
+    </class>
+    
+    
+    
+    <class name="myapp.model.OrgTypeInfo" table="org_type_info">
+        <id name="org_type_code" type="string" column="org_type_code">
+            <generator class="assigned" />
+           
+        </id>
+        
+        <property name="org_type" type="string" column="org_type" not-null="true" />
+        
+        <set name="org_info_set" table="org_type_info" 
+				inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="org_type_code" not-null="true" />
+            </key>
+            <one-to-many class="myapp.model.OrgInfo" />
+        </set>
+        
+    </class>
+    
+</hibernate-mapping>
